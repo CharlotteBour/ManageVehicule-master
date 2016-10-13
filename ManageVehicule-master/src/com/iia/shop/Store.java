@@ -1,6 +1,5 @@
 package com.iia.shop;
-package com.iia.shop.entity;
-import com.iia.shop.Entity.VehiculeDao.java;
+import com.iia.shop.entity.VehiculeDao.java;
 
 
 import java.util.ArrayList;
@@ -78,6 +77,7 @@ public class Store {
 		case 5:
 			System.out.println("Veuillez saisir l'id du véhicule");
 			delete(sc.nextInt());
+			VehiculeDao.delete(vehicule);
 			break;
 		default:
 			break;
@@ -147,7 +147,7 @@ public class Store {
 
 	private static void delete(int index) {
 		vehicules.remove(index);
-		delete(vehicule);
+		
 	}
 
 	private static ArrayList<Vehicule> readAll() {
