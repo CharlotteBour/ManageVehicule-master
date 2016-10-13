@@ -1,4 +1,7 @@
 package com.iia.shop;
+package com.iia.shop.entity;
+import com.iia.shop.Entity.VehiculeDao.java;
+
 
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -23,10 +26,6 @@ public class Store {
 
 	public static void main(String[] args) {
 		vehicules = new ArrayList<Vehicule>();
-		Vehicule v1 = new Vehicule("citroen", 2004, 150, "C3", "blue", 5000 );
-		Vehicule v2 = new Vehicule("peugeot", 2007, 200, "3008", "blanc", 20000 );
-		vehicules.add(v1);
-		vehicules.add(v2);
 		
 		assets();
 		
@@ -50,6 +49,7 @@ public class Store {
 			
 			setVehicule(vehicule);
 			create(vehicule);
+			VehiculeDao.create(vehicule);
 			break;
 		case 2:
 			System.out.println("Veuillez saisir l'id du véhicule");
@@ -57,6 +57,7 @@ public class Store {
 			
 			displayVehicule(vehicule);
 			setVehicule(vehicule);
+			update(vehicule);
 			break;
 		case 3:
 			ArrayList<Vehicule> vehicules = readAll();
@@ -140,10 +141,13 @@ public class Store {
 	}
 	private static void create(Vehicule vehicule) {
 		vehicules.add(vehicule);
+		
+		
 	}
 
 	private static void delete(int index) {
 		vehicules.remove(index);
+		delete(vehicule);
 	}
 
 	private static ArrayList<Vehicule> readAll() {
@@ -181,10 +185,6 @@ public class Store {
 	}
 	
 	private static void assets() {
-		Vehicule v1 = new Vehicule("peugeot", 2016, 50, "3008", "blanc", 20000);
-		Vehicule v2 = new Vehicule("audi", 2016, 90, "A5", "noire", 47000);
 		
-		vehicules.add(v1);
-		vehicules.add(v2);
 	}
 }
