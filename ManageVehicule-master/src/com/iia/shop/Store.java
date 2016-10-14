@@ -1,7 +1,4 @@
 package com.iia.shop;
-import com.iia.shop.entity.VehiculeDao.java;
-
-
 import java.util.ArrayList;
 import java.util.Scanner;
 import java.io.Serializable;
@@ -15,6 +12,8 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import com.iia.shop.entity.Vehicule;
+import com.iia.shop.entity.VehiculeDao;
+
 import java.io.CharArrayReader;
 import java.io.CharArrayWriter;
 
@@ -40,26 +39,27 @@ public class Store {
 		System.out.println("Votre choix");
 		int choice = sc.nextInt();
 		
+		VehiculeDao vdao = new VehiculeDao();
 		Vehicule vehicule;
 		
 		switch (choice) {
 		case 1:
 			vehicule = new Vehicule();
-			
 			setVehicule(vehicule);
 			create(vehicule);
-			VehiculeDao.create(vehicule);
+			vdao.create(vehicule);
 			break;
 		case 2:
-			System.out.println("Veuillez saisir l'id du véhicule");
-			vehicule = read(sc.nextInt());
 			
-			displayVehicule(vehicule);
+			System.out.println("Veuillez saisir l'id du véhicule");
+			vehicule = new Vehicule();
+			vehicule.setId(sc.nextInt());
+			
 			setVehicule(vehicule);
-			update(vehicule);
+			vdao.update(vehicule);
 			break;
 		case 3:
-			ArrayList<Vehicule> vehicules = readAll();
+			vehicules = (ArrayList<Vehicule>) vdao.findAll();
 			
 			for (Vehicule vehicule2 : vehicules) {
 				displayVehicule(vehicule2);
@@ -76,18 +76,15 @@ public class Store {
 			
 		case 5:
 			System.out.println("Veuillez saisir l'id du véhicule");
-			delete(sc.nextInt());
-			VehiculeDao.delete(vehicule);
+			
+			vehicule = new Vehicule();
+			vehicule.setId(sc.nextInt());
+			vdao.delete(vehicule);
 			break;
 		default:
 			break;
 		}
-
-		File serialFile = new File("C:\\Users\\cbour\\cars.txt");
-
-		Store.saveObject(serialFile, vehicules);
-		readObject(serialFile); 
-		
+	
 	}
 
 	public static void saveObject(File file, ArrayList<Vehicule> al) {
@@ -115,11 +112,11 @@ public class Store {
 			FileInputStream in;
 			in = new FileInputStream(file);
 			ObjectInputStream objectIn = new ObjectInputStream(in);
-			//Vehicule v = (Vehicule) objectIn.readObject();
+		
 			ArrayList<Vehicule> al = (ArrayList)objectIn.readObject();
 
 			for(Vehicule o: al) {
-				// Vehicule vSelect =  al.get(i);
+			
 			System.out.println(o.toString());
 			
 
@@ -165,6 +162,7 @@ public class Store {
 		System.out.println("Année : " + vehicule.getYear());
 		System.out.println("Vitesse : " + vehicule.getSpeed());
 		System.out.println("Prix : " + vehicule.getPrice());
+		System.out.println("");
 	}
 	
 	private static void setVehicule(Vehicule vehicule) {
@@ -182,6 +180,9 @@ public class Store {
 
 		System.out.println("Veuillez saisir le prix du véhicule");
 		vehicule.setPrice(sc.nextDouble());
+		
+		System.out.println("Veuillez saisir la vitesse du véhicule");
+		vehicule.setSpeed(sc.nextInt());
 	}
 	
 	private static void assets() {

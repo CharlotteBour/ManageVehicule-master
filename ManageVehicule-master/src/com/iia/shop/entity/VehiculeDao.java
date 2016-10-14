@@ -26,9 +26,9 @@ public class VehiculeDao implements IDao<Vehicule>{
 
 String req = "insert into " + VehiculeDao.TABLENAME + " (" + VehiculeDao.BRAND + ", " + VehiculeDao.YEAR 
 + ", " + VehiculeDao.SPEED + ", " + VehiculeDao.MODEL + ", " + VehiculeDao.COLOR + ", " + VehiculeDao.PRICE
-+ ") VALUES('" + (object).getMarque()+"', '" + (object).getYear() +"', '" + (object).getSpeed() 
-+"', '" + (object).getModel() +"', '" + (object).getColor() +"', '" + (object).getPrice()
-+ "');" ;
++ ") VALUES('" + (object).getMarque()+ "', " + (object).getYear() + ", " + (object).getSpeed() 
++ ", '" + (object).getModel() + "', '" + (object).getColor() + "', " + (object).getPrice()
++ ");" ;
 
 try {
 	Statement st = Connexion.getConnection().createStatement();
@@ -36,7 +36,7 @@ try {
 		return true;
 	}
 } catch (SQLException e) {
-	System.out.println("erreur");
+	System.out.println("erreur create");
 }
 		
 		return false;
@@ -46,12 +46,12 @@ try {
 	public boolean update(Vehicule object) {
 		String req = "UPDATE " + VehiculeDao.TABLENAME +
 				" SET " + VehiculeDao.BRAND + "='" + object.getMarque() + "', " + VehiculeDao.YEAR + 
-				"= '" + object.getYear() + "', " + VehiculeDao.SPEED + 
-				"= '" + object.getSpeed()  + "', " + VehiculeDao.MODEL + 
+				"= " + object.getYear() + ", " + VehiculeDao.SPEED + 
+				"= " + object.getSpeed()  + ", " + VehiculeDao.MODEL + 
 				"= '" + object.getModel() + "', " + VehiculeDao.COLOR + 
 				"= '" + object.getColor() + "', " + VehiculeDao.PRICE + 
-				"= '" + object.getPrice()
-				+ "' WHERE " + VehiculeDao.ID + "=" + object.getId(); 
+				"= " + object.getPrice()
+				+ " WHERE " + VehiculeDao.ID + "=" + object.getId(); 
 		try {
 			Statement st = Connexion.getConnection().createStatement();
 			if(st.executeUpdate(req) >= 1 ) {
@@ -67,7 +67,7 @@ try {
 	@Override
 	public boolean delete (Vehicule object) {
 		
-		String req = "DELETE FROM " + VehiculeDao.TABLENAME + " WHERE id =" + (object).getId();
+		String req = "DELETE FROM " + VehiculeDao.TABLENAME + " WHERE Identifiant =" + (object).getId();
 		try {
 			Statement st = Connexion.getConnection().createStatement();
 			if (st.executeUpdate(req) >= 1) {
@@ -156,12 +156,13 @@ try {
 		return ve;
 	}
 
-
-
+	@Override
+	public boolean createV(Vehicule object) {
+		// TODO Auto-generated method stub
+		return false;
+	}
 
 	
-
-
 	
 	
 	
