@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
+
 import com.iia.shop.entity.Vehicule;
 import com.iia.shop.entity.VehiculeDao;
 
@@ -23,16 +24,16 @@ public class Store {
 	private static Scanner sc;
 
 	public static void main(String[] args) {
+		Menu menu = new Menu();
+		menu.setVisible(true);
+		
 		vehicules = new ArrayList<Vehicule>();
 		
 		assets();
 		
 		System.out.println("Gestion des véhicules");
-		System.out.println("1 - créer un véhicule");
-		System.out.println("2 - mettre à jour un véhicule");
-		System.out.println("3 - voir tous les véhicules");
-		System.out.println("4 - sélectionner un véhicule");
-		System.out.println("5 - supprimer un véhicule");
+		System.out.println("1 - voir tous les véhicules");
+		System.out.println("2 - supprimer un véhicule");
 		
 		sc = new Scanner(System.in);
 		
@@ -43,22 +44,8 @@ public class Store {
 		Vehicule vehicule;
 		
 		switch (choice) {
+		
 		case 1:
-			vehicule = new Vehicule();
-			setVehicule(vehicule);
-			create(vehicule);
-			vdao.create(vehicule);
-			break;
-		case 2:
-			
-			System.out.println("Veuillez saisir l'id du véhicule");
-			vehicule = new Vehicule();
-			vehicule.setId(sc.nextInt());
-			
-			setVehicule(vehicule);
-			vdao.update(vehicule);
-			break;
-		case 3:
 			vehicules = (ArrayList<Vehicule>) vdao.findAll();
 			
 			for (Vehicule vehicule2 : vehicules) {
@@ -66,15 +53,7 @@ public class Store {
 			}
 			break;
 			
-		case 4:
-			System.out.println("Veuillez saisir l'id du véhicule");
-			vehicule = read(sc.nextInt());
-			
-			displayVehicule(vehicule);
-			
-			break;
-			
-		case 5:
+		case 2:
 			System.out.println("Veuillez saisir l'id du véhicule");
 			
 			vehicule = new Vehicule();
@@ -87,61 +66,6 @@ public class Store {
 	
 	}
 
-	public static void saveObject(File file, ArrayList<Vehicule> al) {
-
-		try {
-			FileOutputStream out = new FileOutputStream(file, true);
-			ObjectOutputStream objectOutput = new ObjectOutputStream(out);
-
-			objectOutput.writeObject(al);
-			objectOutput.close();
-
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
-	}
-	
-	public static void readObject(File file) {
-
-		try {
-			FileInputStream in;
-			in = new FileInputStream(file);
-			ObjectInputStream objectIn = new ObjectInputStream(in);
-		
-			ArrayList<Vehicule> al = (ArrayList)objectIn.readObject();
-
-			for(Vehicule o: al) {
-			
-			System.out.println(o.toString());
-			
-
-			}
-		    
-			objectIn.close();
-			
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (ClassNotFoundException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-		
-	}
-	private static void create(Vehicule vehicule) {
-		vehicules.add(vehicule);
-		
-		
-	}
-
 	private static void delete(int index) {
 		vehicules.remove(index);
 		
@@ -149,10 +73,6 @@ public class Store {
 
 	private static ArrayList<Vehicule> readAll() {
 		return vehicules;
-	}
-
-	private static Vehicule read(int index) {
-		return vehicules.get(index);
 	}
 
 	private static void displayVehicule(Vehicule vehicule) {
@@ -165,7 +85,7 @@ public class Store {
 		System.out.println("");
 	}
 	
-	private static void setVehicule(Vehicule vehicule) {
+	 static void setVehicule(Vehicule vehicule) {
 		System.out.println("Veuillez saisir la marque du véhicule");
 		vehicule.setMarque(sc.next());
 		
