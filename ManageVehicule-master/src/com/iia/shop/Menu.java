@@ -46,7 +46,10 @@ public class Menu extends JFrame implements ActionListener{
 	
 	private JButton creer;
 	private JButton voir;
+	private JButton voirall;
 	private JButton modif;
+	private JButton suppr;
+	
 	public Menu() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 450, 300);
@@ -69,9 +72,9 @@ public class Menu extends JFrame implements ActionListener{
 		panel.add(panel_1);
 		GridBagLayout gbl_panel_1 = new GridBagLayout();
 		gbl_panel_1.columnWidths = new int[]{150, 89, 0};
-		gbl_panel_1.rowHeights = new int[]{23, 0, 0, 0, 0, 0};
+		gbl_panel_1.rowHeights = new int[]{23, 0, 0, 0, 0, 0, 0, 0};
 		gbl_panel_1.columnWeights = new double[]{0.0, 0.0, Double.MIN_VALUE};
-		gbl_panel_1.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
+		gbl_panel_1.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
 		panel_1.setLayout(gbl_panel_1);
 		
 		creer = new JButton("Cr\u00E9er un V\u00E9hicule");
@@ -88,15 +91,31 @@ public class Menu extends JFrame implements ActionListener{
 		gbc_voir.gridy = 3;
 		panel_1.add(voir, gbc_voir);
 		
+		voirall = new JButton("Voir tous les V\u00E9hicules");
+		GridBagConstraints gbc_btnVoirTousLes = new GridBagConstraints();
+		gbc_btnVoirTousLes.insets = new Insets(0, 0, 5, 0);
+		gbc_btnVoirTousLes.gridx = 1;
+		gbc_btnVoirTousLes.gridy = 4;
+		panel_1.add(voirall, gbc_btnVoirTousLes);
+		
 		modif = new JButton("Modifier un V\u00E9hicule");
 		GridBagConstraints gbc_modif = new GridBagConstraints();
+		gbc_modif.insets = new Insets(0, 0, 5, 0);
 		gbc_modif.gridx = 1;
-		gbc_modif.gridy = 4;
+		gbc_modif.gridy = 5;
 		panel_1.add(modif, gbc_modif);
+		
+		suppr = new JButton("Supprimer un V\u00E9hicule");
+		GridBagConstraints gbc_btnSupprimerUnHhicule = new GridBagConstraints();
+		gbc_btnSupprimerUnHhicule.gridx = 1;
+		gbc_btnSupprimerUnHhicule.gridy = 6;
+		panel_1.add(suppr, gbc_btnSupprimerUnHhicule);
 		
 		this.creer.addActionListener(this);
 		this.voir.addActionListener(this);
+		this.voirall.addActionListener(this);
 		this.modif.addActionListener(this);
+		this.suppr.addActionListener(this);
 	}
 
 	@Override
@@ -107,9 +126,16 @@ public class Menu extends JFrame implements ActionListener{
 		}else if (e.getSource() == this.voir) {
 			VoirVéhicule voir = new VoirVéhicule();
 			voir.setVisible(true);
-		}else if (e.getSource() == this.modif) {
+		}else if (e.getSource() == this.voirall) {
+			VoirToutVehicules voirtout = new VoirToutVehicules();
+			voirtout.setVisible(true);
+		}
+		else if (e.getSource() == this.modif) {
 			ModifVehicule modif = new ModifVehicule();
 			modif.setVisible(true);
+		}else if (e.getSource() == this.suppr) {
+			SupprimerVehicule suppr = new SupprimerVehicule();
+			suppr.setVisible(true);
 		}
 	}
 

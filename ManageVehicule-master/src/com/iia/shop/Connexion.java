@@ -6,7 +6,7 @@ import java.sql.SQLException;
 public class Connexion {
 
 	
-	private static final String URL = "jdbc:sqlserver://A15-14;databaseName=Store;";
+	private static final String URL = "jdbc:sqlserver://A15-15;databaseName=Store;";
 	private static final String PASSWORD = "SQL2014";
 	private static final String LOGIN = "sa";
 	

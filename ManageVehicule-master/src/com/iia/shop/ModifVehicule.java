@@ -21,6 +21,7 @@ import java.util.ArrayList;
 
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.JComboBox;
 
 public class ModifVehicule extends JFrame implements ActionListener {
 	private static ArrayList<Vehicule> vehicules;
@@ -39,8 +40,9 @@ public class ModifVehicule extends JFrame implements ActionListener {
 	private JLabel lblCouleur;
 	private JLabel lblPrix;
 	private JLabel lblVitesse;
-	private JTextField textField;
 	private JLabel lblNumroDeLa;
+	private JComboBox comboBox;
+	private JButton btnValider_1;
 
 	/**
 	 * Launch the application.
@@ -82,14 +84,31 @@ public class ModifVehicule extends JFrame implements ActionListener {
 		gbc_lblNumroDeLa.gridy = 0;
 		contentPane.add(lblNumroDeLa, gbc_lblNumroDeLa);
 
-		textField = new JTextField();
-		GridBagConstraints gbc_textField_7 = new GridBagConstraints();
-		gbc_textField_7.insets = new Insets(0, 0, 5, 0);
-		gbc_textField_7.fill = GridBagConstraints.HORIZONTAL;
-		gbc_textField_7.gridx = 3;
-		gbc_textField_7.gridy = 0;
-		contentPane.add(textField, gbc_textField_7);
-		textField.setColumns(10);
+		comboBox = new JComboBox();
+		GridBagConstraints gbc_comboBox = new GridBagConstraints();
+		gbc_comboBox.insets = new Insets(0, 0, 5, 0);
+		gbc_comboBox.fill = GridBagConstraints.HORIZONTAL;
+		gbc_comboBox.gridx = 3;
+		gbc_comboBox.gridy = 0;
+		contentPane.add(comboBox, gbc_comboBox);
+
+		VehiculeDao vDao = new VehiculeDao();
+		vehicules = (ArrayList<Vehicule>) vDao.findAll();
+
+		for (Vehicule vehicule : vehicules) {
+
+			comboBox.addItem(vehicule.getId()); // + " - " + vehicule.getModel()
+												// + " - " +
+												// vehicule.getMarque()
+
+		}
+
+		btnValider_1 = new JButton("Valider");
+		GridBagConstraints gbc_btnValider_1 = new GridBagConstraints();
+		gbc_btnValider_1.insets = new Insets(0, 0, 5, 0);
+		gbc_btnValider_1.gridx = 3;
+		gbc_btnValider_1.gridy = 1;
+		contentPane.add(btnValider_1, gbc_btnValider_1);
 
 		lblAnnee = new JLabel("Annee");
 		GridBagConstraints gbc_lblAnnee = new GridBagConstraints();
@@ -202,28 +221,53 @@ public class ModifVehicule extends JFrame implements ActionListener {
 		gbc_btnAnnuler.gridx = 2;
 		gbc_btnAnnuler.gridy = 8;
 		contentPane.add(btnAnnuler, gbc_btnAnnuler);
-
-		this.textField.addActionListener(this);
 		this.tfAnnee.addActionListener(this);
 		this.tfModele.addActionListener(this);
 		this.tfCouleur.addActionListener(this);
 		this.tfPrix.addActionListener(this);
 		this.tfVitesse.addActionListener(this);
+		this.tfMarque.addActionListener(this);
 		this.btnValider.addActionListener(this);
 		this.btnAnnuler.addActionListener(this);
+		this.btnValider_1.addActionListener(this);
+		
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		 if (e.getSource() == this.btnValider) {
+
+		if (e.getSource() == this.btnValider_1) {
+
+
+			VehiculeDao vDao = new VehiculeDao();
+			Vehicule vehicule;
+			vehicule = new Vehicule();
+			
+			int i = (int) comboBox.getSelectedItem();
+			vehicule = vDao.findById(i);
+			String color = vehicule.getColor();
+			String marque = vehicule.getMarque();
+			String modele = vehicule.getModel();
+			int vitesse = vehicule.getSpeed();
+			int year = vehicule.getYear();
+			int prix = (int) vehicule.getPrice();
+
+			tfMarque.setText(marque);
+			tfModele.setText(modele);
+			tfCouleur.setText(color);
+			tfPrix.setText("" + prix);
+			tfVitesse.setText("" + vitesse);
+			tfAnnee.setText("" + year);
+
+		} else if (e.getSource() == this.btnValider) {
 			int res = JOptionPane.showConfirmDialog(null, "Voulez vous valider ?", "valider",
 					JOptionPane.YES_NO_OPTION);
 			if (res == 0) { // oui
 				VehiculeDao vDao = new VehiculeDao();
 				Vehicule vehicule;
 				vehicule = new Vehicule();
-				int i = Integer.parseInt(textField.getText());
-				vehicule.setId(i);
+				int i = (int) comboBox.getSelectedItem();
+				vehicule = vDao.findById(i);
 				modifier(vehicule);
 				vDao.update(vehicule);
 				this.dispose();
@@ -238,7 +282,7 @@ public class ModifVehicule extends JFrame implements ActionListener {
 		}
 
 	}
-	
+
 	public void modifier(Vehicule vehicule) {
 		int res = 0;
 		vehicule.setMarque(tfMarque.getText());
